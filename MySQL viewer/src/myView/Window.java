@@ -56,7 +56,6 @@ public class Window {
 	}
 	
 	
-	
 	private  void initialize() {
 		
 		final int WIDTH = 1280, HEIGHT = 720;
