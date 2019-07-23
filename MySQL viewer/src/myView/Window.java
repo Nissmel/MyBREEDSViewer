@@ -176,6 +176,5 @@ public class Window {
 		});
 		menu.add(btnAdd);
 
-
 	}
 }
