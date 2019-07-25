@@ -45,7 +45,7 @@ public class View extends Window{
 		
 		if(!change)
 		{
-			if(currentBreed>1)
+			if(currentBreed>2)
 				currentBreed--;
 		}
 		

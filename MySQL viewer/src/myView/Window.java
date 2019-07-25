@@ -80,14 +80,14 @@ public class Window  {
 	}
 	
 
-	private JFrame frame;
-	public JPanel addBreed;
+	public static JFrame frame;
+	public static JPanel addBreed;
 	public static JPanel viewBreed;
 	public JPanel menu;
 	public static JLabel[] textLabels;
 	public static JLabel[] breedLabels;
 	
-public  void initialize() {
+private  void initialize() {
 		
 		
 		final int WIDTH = 1280, HEIGHT = 720;
@@ -159,51 +159,7 @@ public  void initialize() {
 		
 		
 		
-		//menu		
-		menu = new JPanel();
-		menu.setBackground(Color.WHITE);
-		layeredPane.add(menu, "name_410359960271086");
-		menu.setLayout(null);
-		
-		JButton btnBrowse = new JButton("Browse breeds");
-		btnBrowse.setBounds(100, 300, 400, 200);
-		btnBrowse.setFont(new Font("Verdana", Font.PLAIN, 40));
-		btnBrowse.setBorder(new LineBorder(Color.DARK_GRAY));
-		btnBrowse.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
-		btnBrowse.setBackground(Color.WHITE);		
-		btnBrowse.setRequestFocusEnabled(false);
-		btnBrowse.setVisible(true);
-		btnBrowse.setFocusPainted(false);
-		btnBrowse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(viewBreed);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-				setText();
-				setBreed();
-			}
-		});
-		
-		btnBrowse.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnBrowse.setBackground(new Color(237, 237, 237));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnBrowse.setBackground(Color.WHITE);
-			}
-		});
-		menu.add(btnBrowse);
-		
-		addBreed = new JPanel();
-		layeredPane.add(addBreed, "name_410359942089403");
-		addBreed.setVisible(false);
-		addBreed.setBackground(Color.WHITE);
-		addBreed.setLayout(null);	
-		
-		
+		menu = menuBuilder.buildMenu(layeredPane);
 		
 		
 		
@@ -276,34 +232,11 @@ public  void initialize() {
 		
 		
 		//add breed window
-		JButton btnAdd = new JButton("Add new breed");
-		btnAdd.setBounds(780, 300, 400, 200);
-		btnAdd.setFont(new Font("Verdana", Font.PLAIN, 40));
-		btnAdd.setBorder(new LineBorder(Color.DARK_GRAY));
-		btnAdd.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(5.0f)));
-		btnAdd.setBackground(Color.WHITE);		
-		btnAdd.setRequestFocusEnabled(false);
-		btnAdd.setFocusPainted(false);
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(addBreed);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-			}
-		});
-		
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnAdd.setBackground(new Color(237, 237, 237));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnAdd.setBackground(Color.WHITE);
-			}
-		});
-		menu.add(btnAdd);
+		addBreed = new JPanel();
+		layeredPane.add(addBreed, "name_410359942089403");
+		addBreed.setVisible(false);
+		addBreed.setBackground(Color.WHITE);
+		addBreed.setLayout(null);	
 		
 
 
