@@ -123,7 +123,7 @@ private  void initialize() {
 		
 		menu = menuBuilder.buildMenu(layeredPane);
 		
-		
+	
 		
 		
 		viewBreed = viewBreedBuilder.buildView(layeredPane);
