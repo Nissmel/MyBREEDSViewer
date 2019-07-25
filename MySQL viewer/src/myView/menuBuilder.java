@@ -16,7 +16,7 @@ import javax.swing.border.LineBorder;
 
 public class menuBuilder extends Window{
 
-	static JPanel menu;
+	private static JPanel menu;
 	
 	public static  JPanel buildMenu(JLayeredPane layeredPane) 
 	{
@@ -24,7 +24,7 @@ public class menuBuilder extends Window{
 		menu.setBackground(Color.WHITE);
 		layeredPane.add(menu, "name_410359960271086");
 		menu.setLayout(null);
-		
+
 		
 		JButton btnBrowse = new JButton("Browse breeds");
 		btnBrowse.setBounds(100, 300, 400, 200);
