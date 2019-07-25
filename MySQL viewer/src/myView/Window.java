@@ -93,7 +93,6 @@ private  void initialize() {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		
 		header = headerBuilder.buildHeader(layeredPane);
 		
 		JButton btnMenu = new JButton("Back to menu");
@@ -113,19 +112,16 @@ private  void initialize() {
 		btnMenu.setFocusPainted(false);
 		header.add(btnMenu);
 		
-
+		
 		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(0, 0, WIDTH, HEIGHT);
 		frame.getContentPane().add(layeredPane);
 		layeredPane.setLayout(new CardLayout(0, 0));
-		
-		
-		
+
 		menu = menuBuilder.buildMenu(layeredPane);
 	
 		viewBreed = viewBreedBuilder.buildView(layeredPane);
 
-		
 		//add breed window
 		addBreed = new JPanel();
 		layeredPane.add(addBreed, "name_410359942089403");
