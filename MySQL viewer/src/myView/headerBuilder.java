@@ -2,10 +2,6 @@ package myView;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -15,6 +11,8 @@ public class headerBuilder extends Window{
 	static JPanel header;
 	public static JPanel buildHeader(JLayeredPane layeredPane)
 	{
+		
+		
 	    header = new JPanel();
 		header.setBounds(0, 0, 1280, 80);
 		frame.getContentPane().add(header);
@@ -42,9 +40,9 @@ public class headerBuilder extends Window{
 		red.setLayout(null);
 		
 		JLabel txtpnPuppy = new JLabel();
-		txtpnPuppy.setBounds(5,11, 166, 63);
+		txtpnPuppy.setBounds(5,11, 166, 57);
 		txtpnPuppy.setForeground(new Color(240, 240, 240));
-		txtpnPuppy.setFont(new Font("Nunito-Bold", Font.BOLD, 46));
+		txtpnPuppy.setFont(new Font("Verdana", Font.BOLD, 46));
 		txtpnPuppy.setText("puppy");
 		txtpnPuppy.setBackground(null);
 		red.add(txtpnPuppy);
