@@ -14,7 +14,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class menuBuilder extends Window{
+public class MenuBuilder extends Window{
 
 	private static JPanel menu;
 	
@@ -41,8 +41,7 @@ public class menuBuilder extends Window{
 				layeredPane.add(viewBreed);
 				layeredPane.repaint();
 				layeredPane.revalidate();
-				Window.setText();
-				Window.setBreed();
+				View.setText();
 			}
 		});
 		

@@ -17,34 +17,14 @@ import javax.swing.JLabel;
 
 public class Window  {
 
-	public static void setBreed()
-	{
-		for(int i=0; i<16;i++) {
-			breedLabels[i].setText(breedInfo[i]);
-			breedLabels[i].setBounds(600,100+i*30,300, 100);
-			breedLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
-			viewBreed.add(breedLabels[i]);
-		}
-	}
-	
-	public static void setText()
-	{
-		for(int i=0; i<16;i++) {
-			textLabels[i].setText(text[i]);
-			textLabels[i].setBounds(300,100+i*30,300, 100);
-			textLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
-			viewBreed.add(textLabels[i]);
-		}
-	}
-	
-	
 	public static String URL = "jdbc:mysql://localhost:3306/chooseyourpuppy";
 	public static String user = "root";
 	public static String password = "";	
 	public static String query = "select * from breeds";
-	
+
+	static String [] breedLabelsInfo = new String[16];
 	static String [] breedInfo = new String[16];
-	static String [] text = new String[16];
+
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -60,6 +40,8 @@ public class Window  {
 		
 
 		View.connect(URL, user, password, query);
+		
+		
 
 	}
 
@@ -93,7 +75,10 @@ private  void initialize() {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		header = headerBuilder.buildHeader(layeredPane);
+		header = HeaderBuilder.buildHeader(layeredPane);
+
+
+		
 		
 		JButton btnMenu = new JButton("Back to menu");
 		btnMenu.addActionListener(new ActionListener() {
@@ -109,7 +94,6 @@ private  void initialize() {
 		btnMenu.setFont(new Font("Verdana", Font.BOLD, 18));
 		btnMenu.setBounds(1050, 20, 180, 40);
 		btnMenu.setBorderPainted(false);
-		btnMenu.setFocusPainted(false);
 		header.add(btnMenu);
 		
 		
@@ -118,31 +102,25 @@ private  void initialize() {
 		frame.getContentPane().add(layeredPane);
 		layeredPane.setLayout(new CardLayout(0, 0));
 
-		menu = menuBuilder.buildMenu(layeredPane);
+		menu = MenuBuilder.buildMenu(layeredPane);
 	
-		viewBreed = viewBreedBuilder.buildView(layeredPane);
-
-		//add breed window
-		addBreed = new JPanel();
-		layeredPane.add(addBreed, "name_410359942089403");
-		addBreed.setVisible(false);
-		addBreed.setBackground(Color.WHITE);
-		addBreed.setLayout(null);
+		viewBreed = ViewBreedBuilder.buildView(layeredPane);
+		
+		addBreed = AddBreedBuilder.buildAdd(layeredPane);
 		
 
-
 		
-		breedLabels = new JLabel[breedInfo.length];
+		breedLabels = new JLabel[View.breedInfo.length];
 
-		for(int i=0; i<breedInfo.length; i++) {
-			breedLabels[i] = new JLabel(breedInfo[i]);
+		for(int i=0; i<View.breedInfo.length; i++) {
+			breedLabels[i] = new JLabel(View.breedInfo[i]);
 		}
 		
 		
-		textLabels = new JLabel[breedInfo.length];
+		textLabels = new JLabel[View.breedInfo.length];
 
-		for(int i=0; i<breedInfo.length; i++) {
-			textLabels[i] = new JLabel(breedInfo[i]);
+		for(int i=0; i<View.breedInfo.length; i++) {
+			textLabels[i] = new JLabel(View.breedInfo[i]);
 		}
 
 

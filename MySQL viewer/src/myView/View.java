@@ -1,19 +1,20 @@
 package myView;
 
+import java.awt.Font;
 import java.sql.*;
 
-import com.mysql.cj.util.TestUtils;
 
 
 public class View extends Window{
 	
 	static int currentBreed = 2;
 	static int count = 1;
+	public static int columnCount; 
 	
 
 	public static void connect(String URL, String user, String password, String query)
 	{
-		populateText();
+		
 		try {
 			Connection myConn = DriverManager.getConnection(URL, user, password);
 			
@@ -21,11 +22,15 @@ public class View extends Window{
 			
 			ResultSet myRs = myStmt.executeQuery(query);
 			
+			ResultSetMetaData metadata = myRs.getMetaData();
+			columnCount = metadata.getColumnCount();
+
+			
 			count =0;
 			while(myRs.next())
 			{
 				breedInfo[count]=(myRs.getString(Integer.toString(currentBreed)));	
-				Window.setBreed();
+				setBreed();
 				count++;
 			}
 			
@@ -35,11 +40,36 @@ public class View extends Window{
 		}
 	}
 	
+
+	
+
+	
+	public static void setBreed()
+	{
+		for(int i=0; i<columnCount-1;i++) {
+			breedLabels[i].setText(breedInfo[i]);
+			breedLabels[i].setBounds(600,100+i*30,300, 100);
+			breedLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
+			viewBreed.add(breedLabels[i]);
+		}
+	}
+	
+	public static void setText()
+	{
+		for(int i=0; i<16;i++) {
+			textLabels[i].setText(breedLabelsInfo[i]);
+			textLabels[i].setBounds(300,100+i*30,300, 100);
+			textLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
+			viewBreed.add(textLabels[i]);
+		}
+	}
+	
+	
 	public static void changeBreed(boolean change)
 	{
 		if(change)
 		{
-			if(currentBreed<17)
+			if(currentBreed<columnCount)
 				currentBreed++;
 		}
 		
@@ -50,31 +80,26 @@ public class View extends Window{
 		}
 		
 		connect(URL, user, password, query);
-		
-		for(int i=0;i<16;i++)
-		{
-			//System.out.println(breedInfo[i]);	
-		}
 	}
 	
 	public static void populateText()
 	{
-		text[0]="Breed name:";
-		text[1]="Weight:";
-		text[2]="Life Span:";
-		text[3]="Size:";
-		text[4]="Popularity:";
-		text[5]="Intelligence";
-		text[6]="Sensitivity Level:";
-		text[7]="Easy To Groom:";
-		text[8]="Drooling Potential:";
-		text[9]="General Health:";
-		text[10]="Tolerates Being Alone:";
-		text[11]="Easy To Train:";
-		text[12]="Prey Drive:";
-		text[13]="Wanderlust Potential:";
-		text[14]="Tendency To Bark:";
-		text[15]="Potentail For Mouthiness:";
+		breedLabelsInfo[0]="Breed name:";
+		breedLabelsInfo[1]="Weight:";
+		breedLabelsInfo[2]="Life Span:";
+		breedLabelsInfo[3]="Size:";
+		breedLabelsInfo[4]="Popularity:";
+		breedLabelsInfo[5]="Intelligence";
+		breedLabelsInfo[6]="Sensitivity Level:";
+		breedLabelsInfo[7]="Easy To Groom:";
+		breedLabelsInfo[8]="Drooling Potential:";
+		breedLabelsInfo[9]="General Health:";
+		breedLabelsInfo[10]="Tolerates Being Alone:";
+		breedLabelsInfo[11]="Easy To Train:";
+		breedLabelsInfo[12]="Prey Drive:";
+		breedLabelsInfo[13]="Wanderlust Potential:";
+		breedLabelsInfo[14]="Tendency To Bark:";
+		breedLabelsInfo[15]="Potentail For Mouthiness:";
 	}
 
 

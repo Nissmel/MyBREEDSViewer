@@ -11,9 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class viewBreedBuilder extends Window{
+public class ViewBreedBuilder extends Window{
 	
 	private static JPanel viewBreed;
+	
+	
 	
 	public static JPanel buildView(JLayeredPane layeredPane)
 	{
@@ -22,7 +24,7 @@ public class viewBreedBuilder extends Window{
 		viewBreed.setLayout(null);
 		viewBreed.setVisible(false);
 		viewBreed.setBackground(Color.WHITE);
-		
+		View.populateText();
 
 		ImageIcon previous = new ImageIcon("src/images/previous.png");
 		ImageIcon previousHover = new ImageIcon("src/images/previousHover.png");

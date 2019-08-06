@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class headerBuilder extends Window{
+public class HeaderBuilder extends Window{
 
 	static JPanel header;
 	public static JPanel buildHeader(JLayeredPane layeredPane)
