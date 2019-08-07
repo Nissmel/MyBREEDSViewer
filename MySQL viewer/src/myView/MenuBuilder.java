@@ -10,8 +10,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.LineBorder;
 
 public class MenuBuilder extends Window{
@@ -25,7 +28,6 @@ public class MenuBuilder extends Window{
 		layeredPane.add(menu, "name_410359960271086");
 		menu.setLayout(null);
 
-		
 		JButton btnBrowse = new JButton("Browse breeds");
 		btnBrowse.setBounds(100, 300, 400, 200);
 		btnBrowse.setFont(new Font("Verdana", Font.PLAIN, 40));
@@ -41,7 +43,7 @@ public class MenuBuilder extends Window{
 				layeredPane.add(viewBreed);
 				layeredPane.repaint();
 				layeredPane.revalidate();
-				View.setText();
+				View.setText("viewBreed");
 			}
 		});
 		
@@ -57,7 +59,6 @@ public class MenuBuilder extends Window{
 		});
 		menu.add(btnBrowse);
 		
-		
 		JButton btnAdd = new JButton("Add new breed");
 		btnAdd.setBounds(780, 300, 400, 200);
 		btnAdd.setFont(new Font("Verdana", Font.PLAIN, 40));
@@ -68,10 +69,38 @@ public class MenuBuilder extends Window{
 		btnAdd.setFocusPainted(false);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(addBreed);
-				layeredPane.repaint();
-				layeredPane.revalidate();
+				
+				JPanel panel = new JPanel();
+				JLabel label = new JLabel("Enter a password for database:");
+				JPasswordField userPassword = new JPasswordField(10);
+				
+				panel.add(label);
+				panel.add(userPassword);
+				String[] options = new String[]{"OK", "Cancel"};
+				
+				int option = JOptionPane.showOptionDialog(null, panel, "Password required!",
+						JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[1]);
+				
+				if(option == 0)
+				{
+					String passText = new String(userPassword.getPassword());
+					
+					if(passText.equals(password))
+					{
+						layeredPane.removeAll();
+						layeredPane.add(addBreed);
+						layeredPane.repaint();
+						layeredPane.revalidate();
+						View.setText("addBreed");
+						View.setField();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Typed in password is wrong. Access denied!", 
+								"Wrong password!", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+
 			}
 		});
 		
@@ -87,8 +116,6 @@ public class MenuBuilder extends Window{
 		});
 		menu.add(btnAdd);
 
-	
-		
 		return menu;		
 	}
 }

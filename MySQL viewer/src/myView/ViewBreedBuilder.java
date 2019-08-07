@@ -8,14 +8,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 public class ViewBreedBuilder extends Window{
 	
 	private static JPanel viewBreed;
-	
-	
 	
 	public static JPanel buildView(JLayeredPane layeredPane)
 	{
@@ -25,6 +24,7 @@ public class ViewBreedBuilder extends Window{
 		viewBreed.setVisible(false);
 		viewBreed.setBackground(Color.WHITE);
 		View.populateText();
+		
 
 		ImageIcon previous = new ImageIcon("src/images/previous.png");
 		ImageIcon previousHover = new ImageIcon("src/images/previousHover.png");
@@ -81,6 +81,19 @@ public class ViewBreedBuilder extends Window{
 		nextBreed.setContentAreaFilled(false);
 		nextBreed.setBorderPainted(false);
 		nextBreed.setFocusPainted(false);
+		
+		breedLabels = new JLabel[View.breedInfo.length];
+
+		for(int i=0; i<View.breedInfo.length; i++) {
+			breedLabels[i] = new JLabel(View.breedInfo[i]);
+		}
+		
+		
+		textLabels = new JLabel[View.breedInfo.length];
+
+		for(int i=0; i<View.breedInfo.length; i++) {
+			textLabels[i] = new JLabel(View.breedInfo[i]);
+		}
 		
 		return viewBreed;
 	}

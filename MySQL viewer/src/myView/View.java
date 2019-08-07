@@ -1,7 +1,15 @@
 package myView;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
+
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 
 
@@ -39,30 +47,94 @@ public class View extends Window{
 			exc.printStackTrace();
 		}
 	}
-	
-
-	
 
 	
 	public static void setBreed()
 	{
 		for(int i=0; i<columnCount-1;i++) {
 			breedLabels[i].setText(breedInfo[i]);
-			breedLabels[i].setBounds(600,100+i*30,300, 100);
+			breedLabels[i].setBounds(500,100+i*30,300, 100);
 			breedLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
 			viewBreed.add(breedLabels[i]);
 		}
 	}
 	
-	public static void setText()
+	public static void setField()
+	{
+		for(int i=0; i<columnCount-1;i++) {
+			int z=i;
+			
+			textBreedOptionsMinus[i].setBounds(385,145+i*30,40, 25);
+			textBreedOptionsMinus[i].setForeground(Color.WHITE);
+			textBreedOptionsMinus[i].setBackground(new Color(51, 51, 51));
+			textBreedOptionsMinus[i].setFont(new Font("Verdana", Font.PLAIN, 7));
+			textBreedOptionsMinus[i].setRequestFocusEnabled(false);
+			textBreedOptionsMinus[i].setFocusPainted(false);
+			textBreedOptionsMinus[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int  text = Integer.valueOf(textBreedOptions[z].getText())-1;
+					if(text > 0)
+						textBreedOptions[z].setText(Integer.toString (text));		
+				}
+			});
+			addBreed.add(textBreedOptionsMinus[i]);
+			
+			
+			textBreedOptionsPlus[i].setBounds(535,145+i*30,40, 25);
+			textBreedOptionsPlus[i].setForeground(Color.WHITE);
+			textBreedOptionsPlus[i].setBackground(new Color(51, 51, 51));
+			textBreedOptionsPlus[i].setFont(new Font("Verdana", Font.PLAIN, 7));
+			textBreedOptionsPlus[i].setBorderPainted(false);
+			textBreedOptionsPlus[i].setRequestFocusEnabled(false);
+			textBreedOptionsPlus[i].setFocusPainted(false);
+			textBreedOptionsPlus[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int  text = Integer.valueOf(textBreedOptions[z].getText())+1;
+					if(text < 6)
+						textBreedOptions[z].setText(Integer.toString (text));		
+				}
+			});
+			addBreed.add(textBreedOptionsPlus[i]);
+			
+			
+			textBreedOptions[i].setBounds(430,145+i*30,100, 25);
+			textBreedOptions[i].setHorizontalAlignment(JTextField.CENTER);
+			textBreedOptions[i].setText("1");
+			textBreedOptions[i].setBorder(new LineBorder(Color.RED));
+			textBreedOptions[i].setFont(new Font("Verdana", Font.PLAIN, 20));
+			addBreed.add(textBreedOptions[i]);
+
+		}
+		textBreedOptions[0].setFont(new Font("Verdana", Font.PLAIN, 16));
+		textBreedOptionsMinus[0].setVisible(false);
+		textBreedOptionsPlus[0].setVisible(false);
+		textBreedOptions[0].setBounds(385,145,190, 25);
+		textBreedOptions[0].setText("");	    
+	}
+	
+	public static void setText(String which)
 	{
 		for(int i=0; i<16;i++) {
 			textLabels[i].setText(breedLabelsInfo[i]);
-			textLabels[i].setBounds(300,100+i*30,300, 100);
 			textLabels[i].setFont(new Font("Verdana", Font.PLAIN, 20));
-			viewBreed.add(textLabels[i]);
+			textLabels[i].setBounds(100,100+i*30,300, 100);
+			
+			if(which.equals("viewBreed"))
+			{
+				textLabels[i].setBounds(200,100+i*30,300, 100);
+				viewBreed.add(textLabels[i]);
+			}
+				
+			if(which.equals("addBreed"))
+			{				
+				addBreed.add(textLabels[i]);
+			}
 		}
 	}
+	
+
 	
 	
 	public static void changeBreed(boolean change)

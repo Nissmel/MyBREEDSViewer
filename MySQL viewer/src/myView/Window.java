@@ -5,15 +5,15 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import java.awt.Font;
 import javax.swing.JLayeredPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
-
-
-
+import javax.swing.JSpinner;
 
 public class Window  {
 
@@ -37,12 +37,8 @@ public class Window  {
 				}
 			}
 		});		
-		
 
 		View.connect(URL, user, password, query);
-		
-		
-
 	}
 
 
@@ -58,8 +54,12 @@ public class Window  {
 	private static JPanel header;
 	public static JLabel[] textLabels;
 	public static JLabel[] breedLabels;
-	public JLayeredPane layeredPane;
 	
+	public static JTextField[] textBreedOptions;
+	public static JButton[] textBreedOptionsPlus;
+	public static JButton[] textBreedOptionsMinus;
+	public JLayeredPane layeredPane;
+
 private  void initialize() {
 		
 		
@@ -77,9 +77,21 @@ private  void initialize() {
 		
 		header = HeaderBuilder.buildHeader(layeredPane);
 
+		
+		
+		layeredPane = new JLayeredPane();
+		layeredPane.setBounds(0, 0, WIDTH, HEIGHT);
+		frame.getContentPane().add(layeredPane);
+		layeredPane.setLayout(new CardLayout(0, 0));
 
+		menu = MenuBuilder.buildMenu(layeredPane);
+	
+		viewBreed = ViewBreedBuilder.buildView(layeredPane);
+		
+		addBreed = AddBreedBuilder.buildAdd(layeredPane);
 		
 		
+
 		JButton btnMenu = new JButton("Back to menu");
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,36 +106,8 @@ private  void initialize() {
 		btnMenu.setFont(new Font("Verdana", Font.BOLD, 18));
 		btnMenu.setBounds(1050, 20, 180, 40);
 		btnMenu.setBorderPainted(false);
+		btnMenu.setRequestFocusEnabled(false);
+		btnMenu.setFocusPainted(false);
 		header.add(btnMenu);
-		
-		
-		layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, WIDTH, HEIGHT);
-		frame.getContentPane().add(layeredPane);
-		layeredPane.setLayout(new CardLayout(0, 0));
-
-		menu = MenuBuilder.buildMenu(layeredPane);
-	
-		viewBreed = ViewBreedBuilder.buildView(layeredPane);
-		
-		addBreed = AddBreedBuilder.buildAdd(layeredPane);
-		
-
-		
-		breedLabels = new JLabel[View.breedInfo.length];
-
-		for(int i=0; i<View.breedInfo.length; i++) {
-			breedLabels[i] = new JLabel(View.breedInfo[i]);
-		}
-		
-		
-		textLabels = new JLabel[View.breedInfo.length];
-
-		for(int i=0; i<View.breedInfo.length; i++) {
-			textLabels[i] = new JLabel(View.breedInfo[i]);
-		}
-
-
-		
 	}
 }
