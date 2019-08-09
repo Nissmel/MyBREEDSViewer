@@ -6,33 +6,34 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
-
-public class View extends Window{
+ class DataBaseView extends MyBreed{
 	
-	static int currentBreed = 2;
-	static int count = 1;
-	public static int columnCount; 
+	static int currentBreed = 2, count = 1 ,columnCount;
 	
-
+	
+	
 	public static void connect(String URL, String user, String password, String query)
-	{
+	{		
+		 Connection myConn = null;		
+		 Statement myStmt = null;		
+		 ResultSet myRs = null;
 		
 		try {
-			Connection myConn = DriverManager.getConnection(URL, user, password);
+			 myConn = DriverManager.getConnection(URL, user, password);
 			
-			Statement myStmt = myConn.createStatement();
+			 myStmt = myConn.createStatement();
 			
-			ResultSet myRs = myStmt.executeQuery(query);
+			 myRs = myStmt.executeQuery(query);
 			
 			ResultSetMetaData metadata = myRs.getMetaData();
 			columnCount = metadata.getColumnCount();
-
 			
 			count =0;
 			while(myRs.next())
@@ -46,11 +47,38 @@ public class View extends Window{
 		catch (Exception exc) {
 			exc.printStackTrace();
 		}
+		
+		 finally {
+		    try { myStmt.close(); } catch (Exception e) { /* ignored */ }
+		    try { myRs.close(); } catch (Exception e) { /* ignored */ }
+		    try { myConn.close(); } catch (Exception e) { /* ignored */ }
+		 	}
+	}
+	
+	
+	public static void insert(String URL, String user, String password, String query)
+	{		
+		 Connection myConn = null;		
+		 Statement myStmt = null;		
+		 		 
+		try {
+			 myConn = DriverManager.getConnection(URL, user, password);
+			 myStmt = myConn.createStatement();	
+			 myStmt.executeUpdate(query);
+		}
+		catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		 finally {
+		    try { myStmt.close(); } catch (Exception e) { /* ignored */ }
+		    try { myConn.close(); } catch (Exception e) { /* ignored */ }
+		 	}
 	}
 
 	
 	public static void setBreed()
 	{
+
 		for(int i=0; i<columnCount-1;i++) {
 			breedLabels[i].setText(breedInfo[i]);
 			breedLabels[i].setBounds(500,100+i*30,300, 100);
@@ -61,7 +89,7 @@ public class View extends Window{
 	
 	public static void setField()
 	{
-		for(int i=0; i<columnCount-1;i++) {
+		for(int i=0; i<16;i++) {
 			int z=i;
 			
 			textBreedOptionsMinus[i].setBounds(385,145+i*30,40, 25);
@@ -132,10 +160,7 @@ public class View extends Window{
 				addBreed.add(textLabels[i]);
 			}
 		}
-	}
-	
-
-	
+	}	
 	
 	public static void changeBreed(boolean change)
 	{
@@ -151,7 +176,7 @@ public class View extends Window{
 				currentBreed--;
 		}
 		
-		connect(URL, user, password, query);
+		connect(URL, user, password, connectQuery);
 	}
 	
 	public static void populateText()
@@ -173,6 +198,10 @@ public class View extends Window{
 		breedLabelsInfo[14]="Tendency To Bark:";
 		breedLabelsInfo[15]="Potentail For Mouthiness:";
 	}
-
+	
+	public static int getColumnCount()
+	{
+		return columnCount;
+	}
 
 }

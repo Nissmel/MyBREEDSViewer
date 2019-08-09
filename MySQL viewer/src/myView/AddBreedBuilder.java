@@ -21,69 +21,72 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+public class AddBreedBuilder extends MyBreed {
 
-
-
-
-public class AddBreedBuilder extends Window {
-
-	private static JPanel addBreed;
-	public static String [] userBreedInfo = new String[17];
 	
-	public static JButton finish;
+    static JButton finish;
 	static ImageIcon userIcon;
 	static JLabel userImagePreview;
 	static String userImagePath;
-	 public static Image userImage;
-	public static double xImageSize;
-	public static double yImageSize;
-	public static Image resizedUserImage;
 	
-	public static double xImageSizeResized;
-	public static double yImageSizeResized;
+    static Image userImage;
 
-	public static void enableSendButton()
+
+	public static void enableSendButton(String path)
 	{
-		if(userImagePath!=null) 
+		if(path!=null) 
 			finish.setEnabled(true);
 		else
 			finish.setEnabled(false);
 	}
 	
-	public static void resizeAndSet()
+	
+	public static ImageIcon resize(ImageIcon resIco, int width, int height)
 	{
 		
-	    xImageSize = userIcon.getIconWidth();
-	    yImageSize = userIcon.getIconHeight();
+	    Image resImg = resIco.getImage(); 
+
+		
+		double xImageSize = resIco.getIconWidth();
+	    double yImageSize = resIco.getIconHeight();
+	    
+	    double xImageSizeResized, yImageSizeResized;
 	    
 		if(xImageSize<yImageSize)
 		{
-			xImageSizeResized = xImageSize/(yImageSize/410);
-			yImageSizeResized = 410;
+			xImageSizeResized = xImageSize/(yImageSize/height);
+			yImageSizeResized = height;
 		}
 		
 		else
 		{
-				yImageSizeResized = yImageSize/(xImageSize/560);
-				xImageSizeResized = 560;
+			
+				yImageSizeResized = yImageSize/(xImageSize/width);
+				xImageSizeResized = width;
 		}
 		
-		 resizedUserImage = userImage.getScaledInstance((int) xImageSizeResized, (int) yImageSizeResized, java.awt.Image.SCALE_SMOOTH); 
-		 userIcon = new ImageIcon(resizedUserImage);
-		 userImagePreview.setIcon(userIcon);
-		
-		System.out.println("Wymiary oryginalne: x" + (int) xImageSize +"   y"+(int) yImageSize+"\nWymiary po skalowaniu: x"+(int) xImageSizeResized+"   y"+ (int) yImageSizeResized);
+		 resImg = resImg.getScaledInstance((int) xImageSizeResized, (int) yImageSizeResized, java.awt.Image.SCALE_SMOOTH); 
+		 resIco = new ImageIcon(resImg);
+		 
+		// System.out.println("Orginal resolution: x" + (int) xImageSize +"   y"+(int) yImageSize+"\nResolutionafter resize: x"+(int) xImageSizeResized+"   y"+ (int) yImageSizeResized);
+
+		return resIco;
 	}
+
+	
 	
 	public static JPanel buildAdd(JLayeredPane layeredPane) 
 	{
+
+		String [] userBreedInfo = new String[17];
+
 		
 		addBreed = new JPanel();
 		layeredPane.add(addBreed, "name_410359942089403");
 		addBreed.setVisible(false);
 		addBreed.setBackground(Color.WHITE);
 		addBreed.setLayout(null);
-		
+
 		finish = new JButton("Send puppy!");		
 		finish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
@@ -107,23 +110,40 @@ public class AddBreedBuilder extends Window {
 					}
 					
 					System.out.println(userBreedInfo[16]);
-	
-					 BufferedImage bimage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+					
+					
+					MyBreed.setInsertQuery("ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ")");
+					
+					System.out.println(MyBreed.getInsertQuery());
+					DataBaseView.insert(URL, user, password, MyBreed.getInsertQuery());	
+					
+					columnQuery = "INSERT INTO puppers (`" + (DataBaseView.getColumnCount() + 1) +"`) VALUES (";
+
+					
+					for(int i =0;i<15;i++)
+					{
+						columnQuery = columnQuery + "'" +userBreedInfo[i] +"',";
+					}
+					columnQuery = columnQuery  + userBreedInfo[15] +");";
+					System.out.println(columnQuery);
+
+					DataBaseView.insert(URL, user, password, columnQuery);	
+					
+
+				     userImage = resize(userIcon, 900, 600).getImage(); 	
+					 BufferedImage bimage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
 	
 					    Graphics2D bGr = bimage.createGraphics();
 					    bGr.drawImage(userImage, 0, 0, null);
 					    bGr.dispose();
 					    
 					    try {
-					        // retrieve image
-					        BufferedImage bi = bimage;
 					        File outputfile = new File("C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg");
-					        ImageIO.write(bi, "png", outputfile);
+					        ImageIO.write(bimage, "png", outputfile);
 					    } catch (IOException e1) {
 					        
 					    }
 				}
-				System.gc();
 			}
 		});
 		finish.setForeground(Color.WHITE);
@@ -135,9 +155,6 @@ public class AddBreedBuilder extends Window {
 		finish.setFocusPainted(false);
 		finish.setEnabled(false);
 		addBreed.add(finish);
-		
-	
-		
 		
 		JButton uploadPhoto = new JButton("Choose photo file to upload...");
 		uploadPhoto.setForeground(Color.WHITE);
@@ -155,12 +172,14 @@ public class AddBreedBuilder extends Window {
 			    imageFinder.setVisible(true);
 			    userImagePath = new File(imageFinder.getDirectory()).getAbsolutePath()+"\\"+imageFinder.getFile();
 
-			    userImagePath = userImagePath.replace("\\", "/");
+			    userImagePath = userImagePath.replace("/", "\\");
 			    
 			    userIcon = new ImageIcon(userImagePath);
-			    userImage = userIcon.getImage(); 
-			    resizeAndSet();
-			    enableSendButton();
+			    
+			    userIcon = resize(userIcon, 580, 410);
+				userImagePreview.setIcon(userIcon);	
+				 
+				 enableSendButton(userImagePath);
 			}
 		});
 		addBreed.add(uploadPhoto);
@@ -171,28 +190,28 @@ public class AddBreedBuilder extends Window {
 
 	    
 	    
-		breedLabels = new JLabel[View.breedInfo.length];
+		breedLabels = new JLabel[DataBaseView.breedInfo.length];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
-			breedLabels[i] = new JLabel(View.breedInfo[i]);
+		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
+			breedLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
 		}
 		
-		textBreedOptions = new JTextField[View.breedInfo.length];
+		textBreedOptions = new JTextField[DataBaseView.breedInfo.length];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
+		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
 			textBreedOptions[i] = new JTextField();
 		}
 		
 		
-		textBreedOptionsPlus = new JButton[View.breedInfo.length];
+		textBreedOptionsPlus = new JButton[DataBaseView.breedInfo.length];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
+		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
 			textBreedOptionsPlus[i] = new JButton("+");
 		}
 		
-		textBreedOptionsMinus = new JButton[View.breedInfo.length];
+		textBreedOptionsMinus = new JButton[DataBaseView.breedInfo.length];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
+		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
 			textBreedOptionsMinus[i] = new JButton("-");
 		}
 		

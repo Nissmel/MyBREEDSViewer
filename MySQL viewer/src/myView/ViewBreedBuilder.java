@@ -1,20 +1,48 @@
 package myView;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import java.net.*;
 
-public class ViewBreedBuilder extends Window{
+
+public class ViewBreedBuilder extends MyBreed{
+    
+	static JLabel userImageDOG;
+
+	public static void loadAndSetPhoto()
+	{		
+		try {
+			String imgURL = "http://chooseyourpuppy.pl/breeds/"+breedInfo[0]+".jpg";
+			imgURL = imgURL.replace(" ", "%20");
+			
+			BufferedImage img = ImageIO.read(new URL(imgURL));
+			ImageIcon icon = new ImageIcon(img);
+			icon = AddBreedBuilder.resize(icon, 450, 410);
+			userImageDOG.setIcon(icon);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	
-	private static JPanel viewBreed;
+
+		
+	}
+
 	
 	public static JPanel buildView(JLayeredPane layeredPane)
 	{
@@ -23,11 +51,15 @@ public class ViewBreedBuilder extends Window{
 		viewBreed.setLayout(null);
 		viewBreed.setVisible(false);
 		viewBreed.setBackground(Color.WHITE);
-		View.populateText();
-		
 
-		ImageIcon previous = new ImageIcon("src/images/previous.png");
+		userImageDOG= new JLabel();
+		userImageDOG.setBounds(650, 185, 450, 410);
+		viewBreed.add(userImageDOG);
+		
+		DataBaseView.populateText();
+		
 		ImageIcon previousHover = new ImageIcon("src/images/previousHover.png");
+		ImageIcon previous = new ImageIcon("src/images/previous.png");
 
 		JButton prevBreed = new JButton(previous);
 		prevBreed.addMouseListener(new MouseAdapter() {
@@ -42,7 +74,8 @@ public class ViewBreedBuilder extends Window{
 		});
 		prevBreed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				View.changeBreed(false);
+				DataBaseView.changeBreed(false);
+				loadAndSetPhoto();
 			}
 		});
 		prevBreed.setBounds(30, 300, previous.getIconHeight(), previous.getIconWidth());
@@ -52,7 +85,6 @@ public class ViewBreedBuilder extends Window{
 		prevBreed.setContentAreaFilled(false);
 		prevBreed.setBorderPainted(false);
 		prevBreed.setFocusPainted(false);
-		
 
 		ImageIcon next = new ImageIcon("src/images/next.png");
 		ImageIcon nextHover = new ImageIcon("src/images/nextHover.png");
@@ -70,7 +102,8 @@ public class ViewBreedBuilder extends Window{
 		});
 		nextBreed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				View.changeBreed(true);
+				DataBaseView.changeBreed(true);
+				loadAndSetPhoto();
 			}
 		});
 		nextBreed.setBounds(1140, 300, previous.getIconHeight(), previous.getIconWidth());
@@ -82,18 +115,21 @@ public class ViewBreedBuilder extends Window{
 		nextBreed.setBorderPainted(false);
 		nextBreed.setFocusPainted(false);
 		
-		breedLabels = new JLabel[View.breedInfo.length];
+		breedLabels = new JLabel[16];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
-			breedLabels[i] = new JLabel(View.breedInfo[i]);
+		for(int i=0; i<16; i++) {
+			breedLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
 		}
 		
 		
-		textLabels = new JLabel[View.breedInfo.length];
+		textLabels = new JLabel[16];
 
-		for(int i=0; i<View.breedInfo.length; i++) {
-			textLabels[i] = new JLabel(View.breedInfo[i]);
+		for(int i=0; i<16; i++) {
+			textLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
 		}
+		
+		
+		
 		
 		return viewBreed;
 	}

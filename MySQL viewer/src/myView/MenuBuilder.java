@@ -17,16 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.LineBorder;
 
-public class MenuBuilder extends Window{
+public class MenuBuilder extends MyBreed{
 
-	private static JPanel menu;
 	
 	public static  JPanel buildMenu(JLayeredPane layeredPane) 
 	{
 		menu = new JPanel();
 		menu.setBackground(Color.WHITE);
 		layeredPane.add(menu, "name_410359960271086");
+		menu.setBounds(80, 0, 1200, 720);
 		menu.setLayout(null);
+		menu.add(header);
 
 		JButton btnBrowse = new JButton("Browse breeds");
 		btnBrowse.setBounds(100, 300, 400, 200);
@@ -41,9 +42,11 @@ public class MenuBuilder extends Window{
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
 				layeredPane.add(viewBreed);
+				viewBreed.add(header);
 				layeredPane.repaint();
 				layeredPane.revalidate();
-				View.setText("viewBreed");
+				DataBaseView.setText("viewBreed");
+
 			}
 		});
 		
@@ -70,38 +73,40 @@ public class MenuBuilder extends Window{
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JPanel panel = new JPanel();
-				JLabel label = new JLabel("Enter a password for database:");
-				JPasswordField userPassword = new JPasswordField(10);
-				
-				panel.add(label);
-				panel.add(userPassword);
-				String[] options = new String[]{"OK", "Cancel"};
-				
-				int option = JOptionPane.showOptionDialog(null, panel, "Password required!",
-						JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[1]);
-				
-				if(option == 0)
-				{
-					String passText = new String(userPassword.getPassword());
-					
-					if(passText.equals(password))
-					{
-						layeredPane.removeAll();
-						layeredPane.add(addBreed);
-						layeredPane.repaint();
-						layeredPane.revalidate();
-						View.setText("addBreed");
-						View.setField();
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Typed in password is wrong. Access denied!", 
-								"Wrong password!", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("Enter a password for database:");
+		JPasswordField userPassword = new JPasswordField(10);
+		
+		panel.add(label);
+		panel.add(userPassword);
+		String[] options = new String[]{"OK", "Cancel"};
+		
+		int option = JOptionPane.showOptionDialog(null, panel, "Password required!",
+				JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[1]);
+		
+		if(option == 0)
+		{
+			String passText = new String(userPassword.getPassword());
+			
+			if(passText.equals(password))
+			{
+				layeredPane.removeAll();
+				layeredPane.add(addBreed);
+				addBreed.add(header);
+				layeredPane.repaint();
+				layeredPane.revalidate();
 
+				DataBaseView.setText("addBreed");
+				DataBaseView.setField();
 			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Typed in password is wrong. Access denied!", 
+						"Wrong password!", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+
+	}
 		});
 		
 		btnAdd.addMouseListener(new MouseAdapter() {
