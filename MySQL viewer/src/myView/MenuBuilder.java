@@ -86,9 +86,9 @@ public class MenuBuilder extends MyBreed{
 		
 		if(option == 0)
 		{
-			String passText = new String(userPassword.getPassword());
+			//String passText = new String(userPassword.getPassword());
 			
-			if(passText.equals(password))
+			//if(passText.equals(password))
 			{
 				layeredPane.removeAll();
 				layeredPane.add(addBreed);
@@ -99,10 +99,10 @@ public class MenuBuilder extends MyBreed{
 				DataBaseView.setText("addBreed");
 				DataBaseView.setField();
 			}
-			else
+			//else
 			{
-				JOptionPane.showMessageDialog(null, "Typed in password is wrong. Access denied!", 
-						"Wrong password!", JOptionPane.INFORMATION_MESSAGE);
+			//	JOptionPane.showMessageDialog(null, "Typed in password is wrong. Access denied!", 
+			//			"Wrong password!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 

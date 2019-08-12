@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+
+import org.apache.commons.net.ftp.FTPClient;
 
 public class AddBreedBuilder extends MyBreed {
 
@@ -43,10 +47,8 @@ public class AddBreedBuilder extends MyBreed {
 	
 	public static ImageIcon resize(ImageIcon resIco, int width, int height)
 	{
-		
 	    Image resImg = resIco.getImage(); 
 
-		
 		double xImageSize = resIco.getIconWidth();
 	    double yImageSize = resIco.getIconHeight();
 	    
@@ -60,7 +62,6 @@ public class AddBreedBuilder extends MyBreed {
 		
 		else
 		{
-			
 				yImageSizeResized = yImageSize/(xImageSize/width);
 				xImageSizeResized = width;
 		}
@@ -72,14 +73,40 @@ public class AddBreedBuilder extends MyBreed {
 
 		return resIco;
 	}
+	
+	
+	public static void sendToFTP(String fileName)
+	{
+		FTPClient client = new FTPClient();
+		FileInputStream fis = null;
+
+		try {
+		    client.connect("serwer1978625.home.pl");
+		    client.login("serwer1978625", MyBreed.getPassword());
+
+		    fis = new FileInputStream(fileName);
+
+		    client.storeFile(fileName, fis);
+		    client.logout();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (fis != null) {
+		            fis.close();
+		        }
+		        client.disconnect();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		}
+	}
 
 	
 	
 	public static JPanel buildAdd(JLayeredPane layeredPane) 
 	{
-
 		String [] userBreedInfo = new String[17];
-
 		
 		addBreed = new JPanel();
 		layeredPane.add(addBreed, "name_410359942089403");
@@ -101,33 +128,31 @@ public class AddBreedBuilder extends MyBreed {
 					userBreedInfo[16] = userImagePath;				
 					userBreedInfo[0] =  textBreedOptions[0].getText();
 					userBreedInfo[0] = userBreedInfo[0].substring(0, 1).toUpperCase() + userBreedInfo[0].substring(1);
-					System.out.println(userBreedInfo[0]);
 					
 					for(int i=1;i<16;i++)
 					{
 						userBreedInfo[i] =  textBreedOptions[i].getText();
-						System.out.println(userBreedInfo[i]);
 					}
 					
-					System.out.println(userBreedInfo[16]);
 					
 					
-					MyBreed.setInsertQuery("ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ")");
+					MyBreed.setAlterQuery("ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ")");
 					
-					System.out.println(MyBreed.getInsertQuery());
-					DataBaseView.insert(URL, user, password, MyBreed.getInsertQuery());	
-					
-					columnQuery = "INSERT INTO puppers (`" + (DataBaseView.getColumnCount() + 1) +"`) VALUES (";
+					DataBaseView.insert(URL, user, password, MyBreed.getAlterQuery());	
 
-					
-					for(int i =0;i<15;i++)
+					for(int i =0;i<16;i++)
 					{
-						columnQuery = columnQuery + "'" +userBreedInfo[i] +"',";
-					}
-					columnQuery = columnQuery  + userBreedInfo[15] +");";
-					System.out.println(columnQuery);
-
-					DataBaseView.insert(URL, user, password, columnQuery);	
+						String userInfo = breedLabelsInfo[i].replace(" " , "");
+						MyBreed.setColumnQuery("UPDATE puppers SET `" + (DataBaseView.getColumnCount() + 1) + "` = '" + userBreedInfo[i] + "' WHERE `1` = '" + userInfo + "';");
+						
+						MyBreed.setColumnQuery((MyBreed.getColumnQuery()).replace(":", ""));
+						
+						//DataBaseView.insert(URL, user, password, MyBreed.getColumnQuery());		
+						
+						textBreedOptions[i].setBorder(new LineBorder(Color.GREEN));
+					}					
+					
+					
 					
 
 				     userImage = resize(userIcon, 900, 600).getImage(); 	
@@ -143,6 +168,8 @@ public class AddBreedBuilder extends MyBreed {
 					    } catch (IOException e1) {
 					        
 					    }
+					    
+					    sendToFTP("C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg");
 				}
 			}
 		});

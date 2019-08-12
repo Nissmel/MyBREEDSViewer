@@ -6,15 +6,9 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
-import java.awt.Font;
 import javax.swing.JLayeredPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
 
 public class MyBreed  {
 
@@ -22,23 +16,14 @@ public class MyBreed  {
 	static String [] breedInfo = new String[43];
 
 	static String URL = "jdbc:mysql://serwer1978625.home.pl/30826962_form_info";
+	
 	static String user = "30826962_form_info";
 	static String password = "Rozamunda17*";	
 	static String connectQuery = "select * from puppers";	
 	static String columnQuery = "";
-	static String insertQuery = "";
-
-
+	static String alterQuery = "";
 	
-
-	public static String getInsertQuery() {
-		return insertQuery;
-	}
-
-
-	public static void setInsertQuery(String insertQuery) {
-		MyBreed.insertQuery = insertQuery;
-	}
+	
 
 
 	public static void main(String[] args) {
@@ -62,7 +47,7 @@ public class MyBreed  {
 	}
 	
 
-	public JFrame frame;
+	JFrame frame;
 	public static JPanel addBreed, viewBreed, menu, header;
 
 	public static JLabel[] textLabels;
@@ -100,4 +85,38 @@ private  void initialize() {
 		AddBreedBuilder.buildAdd(layeredPane);
 		
 	}
+	
+	
+	public static String getURL() {
+		return URL;
+	}
+	
+	public static String getConnectQuery() {
+		return connectQuery;
+	}
+	
+	public static String getUser() {
+		return user;
+	}
+	
+	public static String getPassword() {
+		return password;
+	}
+	
+	public static String getColumnQuery() {
+		return columnQuery;
+	}
+	
+	public static void setColumnQuery(String columnQuery) {
+		MyBreed.columnQuery = columnQuery;
+	}
+	
+	public static String getAlterQuery() {
+		return alterQuery;
+	}
+	
+	public static void setAlterQuery(String insertQuery) {
+		MyBreed.alterQuery = insertQuery;
+	}
+
 }

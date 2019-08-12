@@ -1,15 +1,12 @@
 package myView;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,9 +18,8 @@ import java.net.*;
 
 public class ViewBreedBuilder extends MyBreed{
     
-	static JLabel userImageDOG;
 
-	public static void loadAndSetPhoto()
+	public static ImageIcon loadServerImage()
 	{		
 		try {
 			String imgURL = "http://chooseyourpuppy.pl/breeds/"+breedInfo[0]+".jpg";
@@ -32,15 +28,14 @@ public class ViewBreedBuilder extends MyBreed{
 			BufferedImage img = ImageIO.read(new URL(imgURL));
 			ImageIcon icon = new ImageIcon(img);
 			icon = AddBreedBuilder.resize(icon, 450, 410);
-			userImageDOG.setIcon(icon);
+			return icon;
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-
-		
+		return null;		
 	}
 
 	
@@ -52,7 +47,7 @@ public class ViewBreedBuilder extends MyBreed{
 		viewBreed.setVisible(false);
 		viewBreed.setBackground(Color.WHITE);
 
-		userImageDOG= new JLabel();
+		JLabel userImageDOG= new JLabel();
 		userImageDOG.setBounds(650, 185, 450, 410);
 		viewBreed.add(userImageDOG);
 		
@@ -75,7 +70,7 @@ public class ViewBreedBuilder extends MyBreed{
 		prevBreed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DataBaseView.changeBreed(false);
-				loadAndSetPhoto();
+				userImageDOG.setIcon(loadServerImage());
 			}
 		});
 		prevBreed.setBounds(30, 300, previous.getIconHeight(), previous.getIconWidth());
@@ -103,7 +98,7 @@ public class ViewBreedBuilder extends MyBreed{
 		nextBreed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DataBaseView.changeBreed(true);
-				loadAndSetPhoto();
+				loadServerImage();
 			}
 		});
 		nextBreed.setBounds(1140, 300, previous.getIconHeight(), previous.getIconWidth());
@@ -126,10 +121,7 @@ public class ViewBreedBuilder extends MyBreed{
 
 		for(int i=0; i<16; i++) {
 			textLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
-		}
-		
-		
-		
+		}		
 		
 		return viewBreed;
 	}

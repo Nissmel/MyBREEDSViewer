@@ -5,13 +5,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
 
  class DataBaseView extends MyBreed{
 	
@@ -162,7 +158,7 @@ import javax.swing.event.DocumentListener;
 		}
 	}	
 	
-	public static void changeBreed(boolean change)
+	public static  void changeBreed(boolean change)
 	{
 		if(change)
 		{
@@ -176,7 +172,7 @@ import javax.swing.event.DocumentListener;
 				currentBreed--;
 		}
 		
-		connect(URL, user, password, connectQuery);
+		connect(MyBreed.getURL(), MyBreed.getUser(), MyBreed.getPassword(), MyBreed.getConnectQuery());
 	}
 	
 	public static void populateText()
@@ -186,17 +182,18 @@ import javax.swing.event.DocumentListener;
 		breedLabelsInfo[2]="Life Span:";
 		breedLabelsInfo[3]="Size:";
 		breedLabelsInfo[4]="Popularity:";
-		breedLabelsInfo[5]="Intelligence";
+		breedLabelsInfo[5]="Intelligence:";
 		breedLabelsInfo[6]="Sensitivity Level:";
 		breedLabelsInfo[7]="Easy To Groom:";
 		breedLabelsInfo[8]="Drooling Potential:";
 		breedLabelsInfo[9]="General Health:";
-		breedLabelsInfo[10]="Tolerates Being Alone:";
+		breedLabelsInfo[10]="Tolerance Being Alone:";
 		breedLabelsInfo[11]="Easy To Train:";
 		breedLabelsInfo[12]="Prey Drive:";
 		breedLabelsInfo[13]="Wanderlust Potential:";
 		breedLabelsInfo[14]="Tendency To Bark:";
-		breedLabelsInfo[15]="Potentail For Mouthiness:";
+		breedLabelsInfo[15]="Potential For Mouthiness:";
+		
 	}
 	
 	public static int getColumnCount()
