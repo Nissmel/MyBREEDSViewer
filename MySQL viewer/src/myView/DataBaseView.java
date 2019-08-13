@@ -11,9 +11,7 @@ import javax.swing.border.LineBorder;
 
  class DataBaseView extends MyBreed{
 	
-	static int currentBreed = 2, count = 1 ,columnCount;
-	
-	
+	static int currentBreed = 2, count = 1 ,columnCount;	
 	
 	public static void connect(String URL, String user, String password, String query)
 	{		
@@ -34,7 +32,7 @@ import javax.swing.border.LineBorder;
 			count =0;
 			while(myRs.next())
 			{
-				breedInfo[count]=(myRs.getString(Integer.toString(currentBreed)));	
+				getBreedInfo()[count]=(myRs.getString(Integer.toString(currentBreed)));	
 				setBreed();
 				count++;
 			}
@@ -45,14 +43,14 @@ import javax.swing.border.LineBorder;
 		}
 		
 		 finally {
-		    try { myStmt.close(); } catch (Exception e) { /* ignored */ }
-		    try { myRs.close(); } catch (Exception e) { /* ignored */ }
-		    try { myConn.close(); } catch (Exception e) { /* ignored */ }
+		    try { myStmt.close(); } catch (Exception exc) {exc.printStackTrace();}
+		    try { myRs.close(); } catch (Exception exc) {exc.printStackTrace();}
+		    try { myConn.close(); } catch (Exception exc) {exc.printStackTrace();}
 		 	}
 	}
 	
 	
-	public static void insert(String URL, String user, String password, String query)
+	public static void insert(String URL, String user, String password, String [] query)
 	{		
 		 Connection myConn = null;		
 		 Statement myStmt = null;		
@@ -60,14 +58,19 @@ import javax.swing.border.LineBorder;
 		try {
 			 myConn = DriverManager.getConnection(URL, user, password);
 			 myStmt = myConn.createStatement();	
-			 myStmt.executeUpdate(query);
+			 
+			 for(int i=0;i<query.length;i++)
+			 {
+				 myStmt.addBatch(query[i]);
+			 }
+			 myStmt.executeBatch();
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
 		}
 		 finally {
-		    try { myStmt.close(); } catch (Exception e) { /* ignored */ }
-		    try { myConn.close(); } catch (Exception e) { /* ignored */ }
+		    try { myStmt.close(); } catch (Exception exc) {exc.printStackTrace();}
+		    try { myConn.close(); } catch (Exception exc) {exc.printStackTrace();}
 		 	}
 	}
 
@@ -172,28 +175,30 @@ import javax.swing.border.LineBorder;
 				currentBreed--;
 		}
 		
-		connect(MyBreed.getURL(), MyBreed.getUser(), MyBreed.getPassword(), MyBreed.getConnectQuery());
+		connect(getURL(),getUser(),getPassword(),getConnectQuery());
 	}
 	
 	public static void populateText()
 	{
-		breedLabelsInfo[0]="Breed name:";
-		breedLabelsInfo[1]="Weight:";
-		breedLabelsInfo[2]="Life Span:";
-		breedLabelsInfo[3]="Size:";
-		breedLabelsInfo[4]="Popularity:";
-		breedLabelsInfo[5]="Intelligence:";
-		breedLabelsInfo[6]="Sensitivity Level:";
-		breedLabelsInfo[7]="Easy To Groom:";
-		breedLabelsInfo[8]="Drooling Potential:";
-		breedLabelsInfo[9]="General Health:";
-		breedLabelsInfo[10]="Tolerance Being Alone:";
-		breedLabelsInfo[11]="Easy To Train:";
-		breedLabelsInfo[12]="Prey Drive:";
-		breedLabelsInfo[13]="Wanderlust Potential:";
-		breedLabelsInfo[14]="Tendency To Bark:";
-		breedLabelsInfo[15]="Potential For Mouthiness:";
+		String  [] labelsInfo = new String[16];
+		labelsInfo[0]="Breed name:";
+		labelsInfo[1]="Weight:";
+		labelsInfo[2]="Life Span:";
+		labelsInfo[3]="Size:";
+		labelsInfo[4]="Popularity:";
+		labelsInfo[5]="Intelligence:";
+		labelsInfo[6]="Sensitivity Level:";
+		labelsInfo[7]="Easy To Groom:";
+		labelsInfo[8]="Drooling Potential:";
+		labelsInfo[9]="General Health:";
+		labelsInfo[10]="Tolerance Being Alone:";
+		labelsInfo[11]="Easy To Train:";
+		labelsInfo[12]="Prey Drive:";
+		labelsInfo[13]="Wanderlust Potential:";
+		labelsInfo[14]="Tendency To Bark:";
+		labelsInfo[15]="Potential For Mouthiness:";
 		
+		setBreedLabelsInfo(labelsInfo);
 	}
 	
 	public static int getColumnCount()

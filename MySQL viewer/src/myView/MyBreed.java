@@ -15,17 +15,13 @@ public class MyBreed  {
 	static String [] breedLabelsInfo = new String[16];
 	static String [] breedInfo = new String[43];
 
-	static String URL = "jdbc:mysql://serwer1978625.home.pl/30826962_form_info";
+	final static  String URL = "jdbc:mysql://serwer1978625.home.pl/30826962_form_info";
 	
-	static String user = "30826962_form_info";
-	static String password = "Rozamunda17*";	
-	static String connectQuery = "select * from puppers";	
-	static String columnQuery = "";
-	static String alterQuery = "";
-	
-	
+	final static String USER = "30826962_form_info";
+	final static String PASSWORD = "Rozamunda17*";	
+	final static String CONNECTQUERY = "select * from puppers";		
 
-
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,19 +39,19 @@ public class MyBreed  {
 	public MyBreed() {
 		initialize();	
 
-		DataBaseView.connect(URL, user, password, connectQuery);
+		DataBaseView.connect(URL, USER, PASSWORD, CONNECTQUERY);
 	}
 	
 
 	JFrame frame;
-	public static JPanel addBreed, viewBreed, menu, header;
+	static JPanel addBreed, viewBreed, menu, header;
 
-	public static JLabel[] textLabels;
-	public static JLabel[] breedLabels;
-	
-	public static JTextField[] textBreedOptions;
-	public static JButton[] textBreedOptionsPlus;
-	public static JButton[] textBreedOptionsMinus;
+	static JLabel[] textLabels = new JLabel[16];
+	static JLabel[] breedLabels = new JLabel[16];
+
+	static JTextField[] textBreedOptions;
+	static JButton[] textBreedOptionsPlus;
+	static JButton[] textBreedOptionsMinus;
 
 private  void initialize() {
 	
@@ -92,31 +88,86 @@ private  void initialize() {
 	}
 	
 	public static String getConnectQuery() {
-		return connectQuery;
+		return CONNECTQUERY;
 	}
 	
 	public static String getUser() {
-		return user;
+		return USER;
 	}
 	
 	public static String getPassword() {
-		return password;
+		return PASSWORD;
 	}
 	
-	public static String getColumnQuery() {
-		return columnQuery;
+
+	public static String[] getBreedInfo() {
+		return breedInfo;
+	}
+
+
+	public static void setBreedInfo(String[] breedInfo) {
+		MyBreed.breedInfo = breedInfo;
+	}
+
+
+	public static JLabel[] getTextLabels() {
+		return textLabels;
+	}
+
+
+	public static void setTextLabels(JLabel[] textLabels) {
+		MyBreed.textLabels = textLabels;
 	}
 	
-	public static void setColumnQuery(String columnQuery) {
-		MyBreed.columnQuery = columnQuery;
+	public static JLabel[] getBreedLabels() {
+		return breedLabels;
+	}
+
+
+	public static void setBreedLabels(JLabel[] breedLabels) {
+		MyBreed.breedLabels = breedLabels;
 	}
 	
-	public static String getAlterQuery() {
-		return alterQuery;
+	public static String[] getBreedLabelsInfo() {
+		return breedLabelsInfo;
 	}
+
+
+	public static void setBreedLabelsInfo(String[] breedLabelsInfo) {
+		MyBreed.breedLabelsInfo = breedLabelsInfo;
+	}
+
 	
-	public static void setAlterQuery(String insertQuery) {
-		MyBreed.alterQuery = insertQuery;
+
+	public static JTextField[] getTextBreedOptions() {
+		return textBreedOptions;
 	}
+
+
+	public static void setTextBreedOptions(JTextField[] textBreedOptions) {
+		MyBreed.textBreedOptions = textBreedOptions;
+	}
+
+
+	public static JButton[] getTextBreedOptionsPlus() {
+		return textBreedOptionsPlus;
+	}
+
+
+	public static void setTextBreedOptionsPlus(JButton[] textBreedOptionsPlus) {
+		MyBreed.textBreedOptionsPlus = textBreedOptionsPlus;
+	}
+
+
+	public static JButton[] getTextBreedOptionsMinus() {
+		return textBreedOptionsMinus;
+	}
+
+
+	public static void setTextBreedOptionsMinus(JButton[] textBreedOptionsMinus) {
+		MyBreed.textBreedOptionsMinus = textBreedOptionsMinus;
+	}
+
+
 
 }

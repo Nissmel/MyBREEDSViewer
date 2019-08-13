@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -21,8 +22,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 
 public class AddBreedBuilder extends MyBreed {
@@ -75,31 +76,28 @@ public class AddBreedBuilder extends MyBreed {
 	}
 	
 	
-	public static void sendToFTP(String fileName)
+	public static void sendToFTP(String fileName, String name)
 	{
 		FTPClient client = new FTPClient();
-		FileInputStream fis = null;
+				
+		name = name +".jpg";
 
-		try {
-		    client.connect("serwer1978625.home.pl");
-		    client.login("serwer1978625", MyBreed.getPassword());
+	        try {
+	  		  	FileInputStream fis = new FileInputStream(new File(fileName));
 
-		    fis = new FileInputStream(fileName);
+	            client.connect("serwer1978625.home.pl");
+	            client.login("nissmel@chooseyourpuppy.pl", MyBreed.getPassword());
+	            client.setFileType(FTP.BINARY_FILE_TYPE);
 
-		    client.storeFile(fileName, fis);
-		    client.logout();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		} finally {
-		    try {
-		        if (fis != null) {
-		            fis.close();
-		        }
-		        client.disconnect();
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
-		}
+	            
+	            client.storeFile(fileName, fis);
+	            client.rename(fileName, name);
+	            client.logout();
+	        } catch (IOException e) {e.printStackTrace();} 
+	        finally 
+	        {
+	            try{client.disconnect();} catch (IOException e) {e.printStackTrace();}
+	        }
 	}
 
 	
@@ -116,7 +114,8 @@ public class AddBreedBuilder extends MyBreed {
 
 		finish = new JButton("Send puppy!");		
 		finish.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
+			public void actionPerformed(ActionEvent e) {					
+				
 				if(textBreedOptions[0].getText().contentEquals("") || textBreedOptions[0].getText() == null)
 				{
 					JOptionPane.showMessageDialog(null,
@@ -134,25 +133,20 @@ public class AddBreedBuilder extends MyBreed {
 						userBreedInfo[i] =  textBreedOptions[i].getText();
 					}
 					
+					String [] queryToSave = new String [17];
 					
-					
-					MyBreed.setAlterQuery("ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ")");
-					
-					DataBaseView.insert(URL, user, password, MyBreed.getAlterQuery());	
+					queryToSave[0] = "ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ");";				
 
 					for(int i =0;i<16;i++)
 					{
 						String userInfo = breedLabelsInfo[i].replace(" " , "");
-						MyBreed.setColumnQuery("UPDATE puppers SET `" + (DataBaseView.getColumnCount() + 1) + "` = '" + userBreedInfo[i] + "' WHERE `1` = '" + userInfo + "';");
 						
-						MyBreed.setColumnQuery((MyBreed.getColumnQuery()).replace(":", ""));
-						
-						//DataBaseView.insert(URL, user, password, MyBreed.getColumnQuery());		
-						
-						textBreedOptions[i].setBorder(new LineBorder(Color.GREEN));
+						queryToSave[i+1] = "UPDATE puppers SET `" + (DataBaseView.getColumnCount() + 1) + "` = '" + userBreedInfo[i] + "' WHERE `1` = '" + userInfo + "';";
+						queryToSave[i+1] = queryToSave[i+1].replace(":", "");
 					}					
 					
-					
+					//DataBaseView.insert(getURL(),getUser(), getPassword(), queryToSave);		
+
 					
 
 				     userImage = resize(userIcon, 900, 600).getImage(); 	
@@ -165,11 +159,14 @@ public class AddBreedBuilder extends MyBreed {
 					    try {
 					        File outputfile = new File("C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg");
 					        ImageIO.write(bimage, "png", outputfile);
-					    } catch (IOException e1) {
-					        
+					    } catch (IOException exc) {
+					    	exc.printStackTrace();
 					    }
 					    
-					    sendToFTP("C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg");
+				        
+				        String imgPath = "C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg";
+					    
+					    sendToFTP(imgPath, userBreedInfo[0]);
 				}
 			}
 		});
@@ -217,28 +214,28 @@ public class AddBreedBuilder extends MyBreed {
 
 	    
 	    
-		breedLabels = new JLabel[DataBaseView.breedInfo.length];
+		breedLabels = new JLabel[getBreedInfo().length];
 
-		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
-			breedLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
+		for(int i=0; i<getBreedInfo().length; i++) {
+			breedLabels[i] = new JLabel(getBreedInfo()[i]);
 		}
 		
-		textBreedOptions = new JTextField[DataBaseView.breedInfo.length];
+		textBreedOptions = new JTextField[getBreedInfo().length];
 
-		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
+		for(int i=0; i<getBreedInfo().length; i++) {
 			textBreedOptions[i] = new JTextField();
 		}
 		
 		
-		textBreedOptionsPlus = new JButton[DataBaseView.breedInfo.length];
+		textBreedOptionsPlus = new JButton[getBreedInfo().length];
 
-		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
+		for(int i=0; i<getBreedInfo().length; i++) {
 			textBreedOptionsPlus[i] = new JButton("+");
 		}
 		
-		textBreedOptionsMinus = new JButton[DataBaseView.breedInfo.length];
+		textBreedOptionsMinus = new JButton[getBreedInfo().length];
 
-		for(int i=0; i<DataBaseView.breedInfo.length; i++) {
+		for(int i=0; i<getBreedInfo().length; i++) {
 			textBreedOptionsMinus[i] = new JButton("-");
 		}
 		

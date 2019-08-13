@@ -18,7 +18,6 @@ import javax.swing.JPasswordField;
 import javax.swing.border.LineBorder;
 
 public class MenuBuilder extends MyBreed{
-
 	
 	public static  JPanel buildMenu(JLayeredPane layeredPane) 
 	{

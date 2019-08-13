@@ -18,13 +18,11 @@ import java.net.*;
 
 public class ViewBreedBuilder extends MyBreed{
     
-
 	public static ImageIcon loadServerImage()
 	{		
 		try {
-			String imgURL = "http://chooseyourpuppy.pl/breeds/"+breedInfo[0]+".jpg";
+			String imgURL = "http://chooseyourpuppy.pl/breeds/"+getBreedInfo()[0]+".jpg";
 			imgURL = imgURL.replace(" ", "%20");
-			
 			BufferedImage img = ImageIO.read(new URL(imgURL));
 			ImageIcon icon = new ImageIcon(img);
 			icon = AddBreedBuilder.resize(icon, 450, 410);
@@ -32,14 +30,18 @@ public class ViewBreedBuilder extends MyBreed{
 			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			System.err.println();
+			return null;		
+
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.err.println();
+			return null;		
 		}
-		return null;		
 	}
 
 	
-	public static JPanel buildView(JLayeredPane layeredPane)
+public static JPanel buildView(JLayeredPane layeredPane)
 	{
 		viewBreed = new JPanel();
 		layeredPane.add(viewBreed, "name_410359924014670");
@@ -98,7 +100,7 @@ public class ViewBreedBuilder extends MyBreed{
 		nextBreed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DataBaseView.changeBreed(true);
-				loadServerImage();
+				userImageDOG.setIcon(loadServerImage());
 			}
 		});
 		nextBreed.setBounds(1140, 300, previous.getIconHeight(), previous.getIconWidth());
@@ -110,17 +112,13 @@ public class ViewBreedBuilder extends MyBreed{
 		nextBreed.setBorderPainted(false);
 		nextBreed.setFocusPainted(false);
 		
-		breedLabels = new JLabel[16];
 
 		for(int i=0; i<16; i++) {
-			breedLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
+			getBreedLabels()[i] = new JLabel(getBreedInfo()[i]);
 		}
 		
-		
-		textLabels = new JLabel[16];
-
 		for(int i=0; i<16; i++) {
-			textLabels[i] = new JLabel(DataBaseView.breedInfo[i]);
+			getTextLabels()[i] = new JLabel(getBreedInfo()[i]);
 		}		
 		
 		return viewBreed;
