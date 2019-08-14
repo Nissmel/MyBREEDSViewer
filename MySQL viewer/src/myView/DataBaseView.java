@@ -59,9 +59,9 @@ import javax.swing.border.LineBorder;
 			 myConn = DriverManager.getConnection(URL, user, password);
 			 myStmt = myConn.createStatement();	
 			 
-			 for(int i=0;i<query.length;i++)
+			 for(String i:query)
 			 {
-				 myStmt.addBatch(query[i]);
+				 myStmt.addBatch(i);
 			 }
 			 myStmt.executeBatch();
 		}
@@ -112,7 +112,6 @@ import javax.swing.border.LineBorder;
 			textBreedOptionsPlus[i].setForeground(Color.WHITE);
 			textBreedOptionsPlus[i].setBackground(new Color(51, 51, 51));
 			textBreedOptionsPlus[i].setFont(new Font("Verdana", Font.PLAIN, 7));
-			textBreedOptionsPlus[i].setBorderPainted(false);
 			textBreedOptionsPlus[i].setRequestFocusEnabled(false);
 			textBreedOptionsPlus[i].setFocusPainted(false);
 			textBreedOptionsPlus[i].addActionListener(new ActionListener() {

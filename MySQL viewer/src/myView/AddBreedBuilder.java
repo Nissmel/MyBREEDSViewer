@@ -12,8 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -87,9 +85,10 @@ public class AddBreedBuilder extends MyBreed {
 
 	            client.connect("serwer1978625.home.pl");
 	            client.login("nissmel@chooseyourpuppy.pl", MyBreed.getPassword());
+	            
+	            client.changeWorkingDirectory("/breeds");
 	            client.setFileType(FTP.BINARY_FILE_TYPE);
 
-	            
 	            client.storeFile(fileName, fis);
 	            client.rename(fileName, name);
 	            client.logout();
@@ -98,10 +97,9 @@ public class AddBreedBuilder extends MyBreed {
 	        {
 	            try{client.disconnect();} catch (IOException e) {e.printStackTrace();}
 	        }
+	        
 	}
-
-	
-	
+		
 	public static JPanel buildAdd(JLayeredPane layeredPane) 
 	{
 		String [] userBreedInfo = new String[17];
@@ -118,9 +116,7 @@ public class AddBreedBuilder extends MyBreed {
 				
 				if(textBreedOptions[0].getText().contentEquals("") || textBreedOptions[0].getText() == null)
 				{
-					JOptionPane.showMessageDialog(null,
-					          "Error: Please enter breed name to proceed", "Error Message",
-					          JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Error: Please enter breed name to proceed", "Error Message",JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
@@ -135,7 +131,7 @@ public class AddBreedBuilder extends MyBreed {
 					
 					String [] queryToSave = new String [17];
 					
-					queryToSave[0] = "ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(" + userBreedInfo[0].length() + ");";				
+					queryToSave[0] = "ALTER TABLE puppers ADD COLUMN `" + (DataBaseView.getColumnCount() + 1) + "` VARCHAR(50);";				
 
 					for(int i =0;i<16;i++)
 					{
@@ -145,28 +141,27 @@ public class AddBreedBuilder extends MyBreed {
 						queryToSave[i+1] = queryToSave[i+1].replace(":", "");
 					}					
 					
-					//DataBaseView.insert(getURL(),getUser(), getPassword(), queryToSave);		
+					DataBaseView.insert(getURL(),getUser(), getPassword(), queryToSave);		
 
 					
 
 				     userImage = resize(userIcon, 900, 600).getImage(); 	
-					 BufferedImage bimage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+					 BufferedImage bimage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 	
 					    Graphics2D bGr = bimage.createGraphics();
 					    bGr.drawImage(userImage, 0, 0, null);
 					    bGr.dispose();
 					    
+					    String imgPath = "src\\database_images\\"+userBreedInfo[0]+".jpg";
+					    
 					    try {
-					        File outputfile = new File("C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg");
+					        File outputfile = new File(imgPath);
 					        ImageIO.write(bimage, "png", outputfile);
 					    } catch (IOException exc) {
 					    	exc.printStackTrace();
-					    }
+					    }        
 					    
-				        
-				        String imgPath = "C:\\Users\\Mariola\\git\\MySQL-viwer\\MySQL viewer\\src\\database_images\\"+userBreedInfo[0]+".jpg";
-					    
-					    sendToFTP(imgPath, userBreedInfo[0]);
+					    sendToFTP(imgPath, userBreedInfo[0]);					   
 				}
 			}
 		});

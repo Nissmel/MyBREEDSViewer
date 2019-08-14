@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public class MyBreed  {
 
 	static String [] breedLabelsInfo = new String[16];
-	static String [] breedInfo = new String[43];
+	static String [] breedInfo = new String[250];
 
 	final static  String URL = "jdbc:mysql://serwer1978625.home.pl/30826962_form_info";
 	
