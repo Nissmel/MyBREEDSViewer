@@ -18,7 +18,7 @@ public class MyBreed  {
 	final static  String URL = "jdbc:mysql://serwer1978625.home.pl/30826962_form_info";
 	
 	final static String USER = "30826962_form_info";
-	final static String PASSWORD = "Rozamunda17*";	
+	final static String PASSWORD = "*******";	
 	final static String CONNECTQUERY = "select * from puppers";		
 
 	
